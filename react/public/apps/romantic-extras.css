@@ -1,0 +1,118 @@
+/* Ajustes compartidos para las cinco experiencias románticas independientes. */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { min-width: 320px; -webkit-text-size-adjust: 100%; }
+body { min-width: 320px; max-width: 100%; overflow-x: hidden; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { touch-action: manipulation; }
+img, svg, canvas { max-width: 100%; }
+
+.extras-back {
+  position: fixed;
+  z-index: 1000;
+  top: max(12px, env(safe-area-inset-top));
+  left: max(12px, env(safe-area-inset-left));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  max-width: calc(100vw - 24px);
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgb(255 190 210 / 0.48);
+  border-radius: 999px;
+  background: rgb(35 10 24 / 0.82);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.22);
+  color: #fff4f7;
+  font: 600 0.82rem/1.2 system-ui, sans-serif;
+  text-decoration: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.extras-back:hover { background: rgb(90 20 48 / 0.94); }
+.extras-back:focus-visible { outline: 3px solid #ffd0dc; outline-offset: 3px; }
+
+@media (max-width: 700px) {
+  body { padding-inline: max(12px, env(safe-area-inset-left)); }
+  body:has(.screen) { padding-top: 58px; }
+  .card {
+    width: 100%;
+    min-height: min(740px, calc(100svh - 24px));
+    height: auto;
+    padding: 68px 16px 20px;
+  }
+  .music-pill { top: max(10px, env(safe-area-inset-top)); right: 10px; gap: 6px; padding: 5px 8px; }
+  .music-pill #musicTitle { max-width: 34vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .content-layer { width: 100%; margin-top: 12px; padding: 12px; }
+  .message-box { min-height: 0; font-size: clamp(1rem, 4vw, 1.12rem); overflow-wrap: anywhere; }
+  .timer-section { margin-top: 14px; }
+  .timer-values { display: flex; flex-wrap: wrap; gap: 0.25rem 0.4rem; font-size: 0.9rem; }
+  .timer-values strong { font-size: 1.18rem; }
+  #treeCanvas { max-height: 100%; }
+
+  .gifts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .gift-card { min-width: 0; padding: 18px 10px; }
+  .gift-icon { font-size: 2.7rem; }
+  .polaroid { width: min(42vw, 165px); }
+  .player-box { gap: 14px; padding: 18px; }
+  .vinyl { width: min(42vw, 150px); height: auto; aspect-ratio: 1; }
+  .track-info { min-width: min(100%, 210px); }
+  .letter-paper { padding: 24px 18px; }
+  .mini-player { right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); max-width: calc(100vw - 24px); }
+
+  body:has(#galaxyCanvas), body:has(#scene) { padding: 0; }
+  .center-title { top: 25%; width: calc(100% - 32px); }
+  .center-title h1 { font-size: clamp(1.35rem, 6vw, 2rem); letter-spacing: 1px; }
+  .center-title p { font-size: 0.9rem; }
+  .space-music { bottom: max(12px, env(safe-area-inset-bottom)); width: max-content; max-width: calc(100vw - 24px); font-size: 0.72rem; }
+  .music-hud { top: max(12px, env(safe-area-inset-top)); right: 12px; max-width: 58vw; font-size: 0.7rem; }
+  .music-hud span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .music-hud button, .space-music button { width: 44px; height: 44px; flex: none; }
+  .modal-box { max-height: calc(100svh - 40px); overflow-y: auto; padding: 24px 18px; }
+  #intro-overlay { padding: 72px 18px 28px; }
+  #intro-overlay h1 { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+  .intro-sub { max-width: 28ch; font-size: 0.75rem; letter-spacing: 2px; }
+  .enter-btn { min-height: 48px; padding: 13px 20px; font-size: 0.82rem; }
+
+  main { padding-top: 54px; }
+  main > section { width: min(100%, 900px); padding: 54px 16px; }
+  .hero { min-height: 82svh; }
+  .countdown-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; width: min(100%, 360px); }
+  .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .polaroid { min-width: 0; width: auto; padding: 8px 8px 18px; }
+  .polaroid-img { height: clamp(105px, 28vw, 150px); }
+  .polaroid p { font-size: 1.2rem; }
+  .timeline { margin-left: 8px; padding-left: 20px; }
+  .tl-item { padding: 16px; }
+  .tl-item::before { left: -27px; }
+  .envelope-wrapper { width: min(100%, 360px); }
+  .envelope { width: 100%; }
+  .music-card { flex-wrap: wrap; padding: 16px; }
+  .music-card > div[style] { min-width: 0; }
+  .script-title { margin-bottom: 24px; }
+}
+
+@media (max-width: 390px) {
+  .extras-back { min-height: 42px; padding-inline: 0.72rem; font-size: 0.75rem; }
+  .gifts-grid { grid-template-columns: 1fr; }
+  .gallery-grid { gap: 10px; }
+  .polaroid-img { height: 100px; }
+  .letter-paper p { font-size: 0.98rem; }
+  .space-music span { max-width: 58vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  .extras-back { min-height: 40px; }
+  .center-title { top: 24%; }
+  .space-music { bottom: max(8px, env(safe-area-inset-bottom)); }
+  #intro-overlay { justify-content: flex-start; overflow-y: auto; }
+  .scanner-wrap { width: 116px; height: 116px; }
+  main > section { padding-block: 38px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

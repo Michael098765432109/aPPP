@@ -1,0 +1,138 @@
+/* ============================================================
+   Para Alexandra — tokens compartidos
+   Dos atmósferas: noche (por defecto) y alba.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Superficies */
+  --bg: #06050c;
+  --bg-2: #0b0916;
+  --surface: rgb(255 255 255 / 0.045);
+  --surface-2: rgb(255 255 255 / 0.08);
+  --surface-solid: #12101d;
+  --text: #f5f2ff;
+  --text-muted: #aaa3c1;
+  --text-dim: #746e8c;
+  --line: rgb(255 255 255 / 0.10);
+  --line-2: rgb(255 255 255 / 0.18);
+
+  /* Acentos */
+  --iris: #8b5cf6;
+  --iris-2: #c4b1ff;
+  --rose: #fb7185;
+  --rose-2: #ffa5b3;
+  --amber: #f7c873;
+  --cyan: #67e8f9;
+  --accent: var(--rose);
+  --accent-2: var(--iris);
+
+  /* Gradientes */
+  --grad-aurora:
+    radial-gradient(60rem 34rem at 12% -10%, rgb(139 92 246 / 0.30), transparent 60%),
+    radial-gradient(50rem 30rem at 85% 0%, rgb(251 113 133 / 0.22), transparent 60%),
+    radial-gradient(46rem 30rem at 55% 110%, rgb(103 232 249 / 0.14), transparent 60%);
+  --grad-text: linear-gradient(105deg, var(--amber) 0%, var(--rose) 38%, var(--iris-2) 72%, var(--cyan) 100%);
+  --grad-btn: linear-gradient(120deg, var(--rose) 0%, var(--iris) 100%);
+
+  /* Tipografía */
+  --text-hero: clamp(3.4rem, 1.6rem + 10vw, 9.5rem);
+  --text-h1: clamp(2.4rem, 1.5rem + 4.5vw, 5rem);
+  --text-h2: clamp(1.8rem, 1.3rem + 2.2vw, 3.1rem);
+  --text-h3: clamp(1.2rem, 1.05rem + 0.7vw, 1.5rem);
+  --text-lg: clamp(1.08rem, 1rem + 0.4vw, 1.3rem);
+  --text-body: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+
+  --leading-tight: 1.02;
+  --leading-snug: 1.2;
+  --leading-body: 1.7;
+  --tracking-tight: -0.025em;
+  --tracking-wide: 0.14em;
+
+  /* Espaciado */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 2.5rem;
+  --space-6: 3rem;
+  --space-8: 4rem;
+  --space-10: 5rem;
+  --space-12: 6rem;
+  --space-16: 8rem;
+  --section: clamp(4.5rem, 3.5rem + 6vw, 9rem);
+
+  /* Formas */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 26px;
+  --radius-xl: 36px;
+  --radius-full: 999px;
+
+  /* Sombras */
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.22);
+  --shadow-md: 0 18px 50px -24px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 40px 120px -40px rgb(0 0 0 / 0.7);
+  --glow-rose: 0 0 60px -12px rgb(251 113 133 / 0.45);
+  --glow-iris: 0 0 60px -12px rgb(139 92 246 / 0.45);
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 650ms;
+
+  /* Layout */
+  --container: 78rem;
+  --container-narrow: 56rem;
+  --gutter: clamp(1.25rem, 4vw, 2.75rem);
+  --header-h: 4.5rem;
+
+  /* Capas */
+  --z-header: 60;
+  --z-overlay: 120;
+  --z-modal: 200;
+  --z-grain: 300;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #fbf6f1;
+  --bg-2: #f4ece4;
+  --surface: rgb(255 255 255 / 0.62);
+  --surface-2: rgb(255 255 255 / 0.86);
+  --surface-solid: #fffdfb;
+  --text: #1c1722;
+  --text-muted: #665d70;
+  --text-dim: #93899e;
+  --line: rgb(28 23 34 / 0.10);
+  --line-2: rgb(28 23 34 / 0.20);
+
+  --iris: #7c3aed;
+  --iris-2: #6d28d9;
+  --rose: #d61f52;
+  --rose-2: #b3123f;
+  --amber: #a16207;
+  --cyan: #0e7490;
+
+  --grad-aurora:
+    radial-gradient(60rem 34rem at 12% -10%, rgb(139 92 246 / 0.16), transparent 60%),
+    radial-gradient(50rem 30rem at 85% 0%, rgb(251 113 133 / 0.16), transparent 60%),
+    radial-gradient(46rem 30rem at 55% 110%, rgb(103 232 249 / 0.12), transparent 60%);
+  --grad-text: linear-gradient(105deg, #b45309 0%, #be123c 40%, #6d28d9 75%, #0e7490 100%);
+  --grad-btn: linear-gradient(120deg, #e11d48 0%, #7c3aed 100%);
+
+  --shadow-sm: 0 2px 8px rgb(28 23 34 / 0.08);
+  --shadow-md: 0 18px 50px -24px rgb(28 23 34 / 0.25);
+  --shadow-lg: 0 40px 120px -40px rgb(28 23 34 / 0.3);
+  --glow-rose: 0 0 60px -12px rgb(214 31 82 / 0.30);
+  --glow-iris: 0 0 60px -12px rgb(124 58 237 / 0.30);
+}

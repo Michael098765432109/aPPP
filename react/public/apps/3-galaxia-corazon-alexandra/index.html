@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Te Amo Alexandra ✨</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body, html {
+    width: 100%;
+    height: 100%;
+    background: #030108;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .center-title {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 10;
+    text-shadow: 0 0 20px rgba(255, 182, 193, 0.9), 0 0 40px rgba(255, 77, 109, 0.7);
+  }
+  .center-title h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    letter-spacing: 2px;
+  }
+  .center-title p {
+    font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+    color: #ffd6e0;
+    margin-top: 4px;
+  }
+
+  .space-music {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    background: rgba(20, 10, 35, 0.75);
+    border: 1px solid rgba(255, 182, 193, 0.35);
+    backdrop-filter: blur(8px);
+    padding: 8px 18px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: #ffe5ec;
+  }
+  .space-music button {
+    background: #ff4d6d;
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+</style>
+<link rel="stylesheet" href="../romantic-extras.css">
+</head>
+<body>
+
+<a class="extras-back" href="../../cartas.html">← Volver a Cartas</a>
+
+<div class="center-title">
+  <h1>Te amo</h1>
+  <p>Alexandra</p>
+</div>
+
+<canvas id="galaxyCanvas"></canvas>
+
+<div class="space-music">
+  <button id="musicBtn" type="button" data-default-track="../../audio/hasta-ese-entonces.mp3" aria-pressed="false" aria-label="Reproducir canción"><span data-music-glyph aria-hidden="true">▶</span></button>
+  <span>Sonido Estelar — Para Alexandra</span>
+  <audio id="bgAudio" loop>
+    <source src="" type="audio/mpeg">
+  </audio>
+</div>
+
+<script>
+  const canvas = document.getElementById('galaxyCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let W, H;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const bgStars = Array.from({ length: 240 }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 1.6,
+    alpha: Math.random()
+  }));
+
+  let shootingStars = [];
+
+  const heartParticles = [];
+  for (let i = 0; i < 650; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const spread = 0.85 + Math.random() * 0.25;
+    const hx = 16 * Math.pow(Math.sin(t), 3) * spread;
+    const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * spread;
+    heartParticles.push({
+      hx, hy,
+      size: 1 + Math.random() * 2,
+      phase: Math.random() * Math.PI * 2,
+      color: Math.random() > 0.3 ? '#fff0f5' : '#ffb3c6'
+    });
+  }
+
+  const spiralArms = 4;
+  const galaxyStars = [];
+  for (let i = 0; i < 900; i++) {
+    const arm = i % spiralArms;
+    const dist = Math.pow(Math.random(), 0.7) * 260;
+    const angle = (arm * (Math.PI * 2 / spiralArms)) + dist * 0.024 + (Math.random() - 0.5) * 0.45;
+    galaxyStars.push({
+      dist,
+      angle,
+      size: 0.8 + Math.random() * 1.8,
+      color: dist < 60 ? '#ffffff' : (Math.random() > 0.4 ? '#e0aaff' : '#ff8fa3')
+    });
+  }
+
+  const orbitItems = [
+    { text: "Eres mi sol ☀️", angle: 0, radiusX: 0.36, radiusY: 0.14, icon: "💑" },
+    { text: "Amor de mi vida", angle: 1.05, radiusX: 0.38, radiusY: 0.15, icon: "💖" },
+    { text: "Eres preciosa", angle: 2.1, radiusX: 0.35, radiusY: 0.14, icon: "✨" },
+    { text: "Me encantas", angle: 3.15, radiusX: 0.37, radiusY: 0.15, icon: "🌹" },
+    { text: "Siempre juntos", angle: 4.2, radiusX: 0.36, radiusY: 0.14, icon: "💍" },
+    { text: "Alexandra ❤️", angle: 5.25, radiusX: 0.38, radiusY: 0.15, icon: "🥰" }
+  ];
+
+  let time = 0;
+  function draw() {
+    ctx.fillStyle = 'rgba(3, 1, 8, 0.35)';
+    ctx.fillRect(0, 0, W, H);
+
+    bgStars.forEach(s => {
+      const flicker = 0.4 + 0.6 * Math.sin(time * 2 + s.alpha * 10);
+      ctx.fillStyle = `rgba(255,255,255,${flicker})`;
+      ctx.beginPath();
+      ctx.arc(s.x % W, s.y % H, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    if (Math.random() < 0.02) {
+      shootingStars.push({ x: Math.random() * W, y: Math.random() * H * 0.4, vx: -7, vy: 4, life: 1 });
+    }
+    shootingStars.forEach((ss, idx) => {
+      ctx.strokeStyle = `rgba(255,255,255,${ss.life})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(ss.x, ss.y);
+      ctx.lineTo(ss.x - ss.vx * 5, ss.y - ss.vy * 5);
+      ctx.stroke();
+      ss.x += ss.vx;
+      ss.y += ss.vy;
+      ss.life -= 0.03;
+      if (ss.life <= 0) shootingStars.splice(idx, 1);
+    });
+
+    const cx = W / 2;
+    const galaxyY = H * 0.68;
+    const heartY = H * 0.31;
+    const heartScale = Math.min(W, H) * 0.011;
+
+    const grad = ctx.createRadialGradient(cx, galaxyY, 2, cx, galaxyY, 130);
+    grad.addColorStop(0, 'rgba(255, 240, 250, 0.95)');
+    grad.addColorStop(0.3, 'rgba(200, 140, 255, 0.45)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.ellipse(cx, galaxyY, 160, 55, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    galaxyStars.forEach(gs => {
+      const a = gs.angle + time * 0.45;
+      const sx = cx + Math.cos(a) * gs.dist * (W / 900);
+      const sy = galaxyY + Math.sin(a) * gs.dist * 0.32;
+      ctx.fillStyle = gs.color;
+      ctx.beginPath();
+      ctx.arc(sx, sy, gs.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    const beat = 1 + Math.sin(time * 3) * 0.04;
+    heartParticles.forEach(hp => {
+      const px = cx + hp.hx * heartScale * beat;
+      const py = heartY + hp.hy * heartScale * beat;
+      const alpha = 0.5 + 0.5 * Math.sin(time * 4 + hp.phase);
+      ctx.fillStyle = hp.color;
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.arc(px, py, hp.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    orbitItems.forEach(item => {
+      const a = item.angle + time * 0.35;
+      const ox = cx + Math.cos(a) * (W * item.radiusX);
+      const oy = H * 0.48 + Math.sin(a) * (H * item.radiusY);
+      const depth = (Math.sin(a) + 1) / 2;
+      const scale = 0.75 + depth * 0.35;
+
+      ctx.save();
+      ctx.translate(ox, oy);
+      ctx.scale(scale, scale);
+      ctx.globalAlpha = 0.45 + depth * 0.55;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
+      ctx.strokeStyle = 'rgba(255, 182, 193, 0.5)';
+      ctx.beginPath();
+      ctx.roundRect(-24, -44, 48, 48, 10);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.font = '24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(item.icon, 0, -12);
+
+      ctx.font = '600 13px Montserrat, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(item.text, 0, 20);
+      ctx.restore();
+    });
+
+    time += 0.016;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  const bgAudio = document.getElementById('bgAudio');
+  const musicBtn = document.getElementById('musicBtn');
+  let playing = false;
+  let timer = null;
+
+  musicBtn.addEventListener('click', () => window.AlexandraMusic.toggle().catch(() => {}));
+  document.addEventListener('alexandra:music-state', (event) => { playing = event.detail.playing; });
+</script>
+<script src="../../packages/audio/shared-music.js"></script>
+</body>
+</html>

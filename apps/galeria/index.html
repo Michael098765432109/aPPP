@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galería visual — Para Alexandra</title>
+  <meta
+    name="description"
+    content="Nueve instantes de luz, noche y calma para mirar sin prisa. Una galería tranquila hecha para Alexandra."
+  />
+  <meta name="theme-color" content="#be185d" />
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../icons/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../../icons/apple-touch-icon.png" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("js");
+      try {
+        var saved = localStorage.getItem("alexandra-theme");
+        if (saved === "light" || saved === "night") root.dataset.theme = saved;
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../../assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/galeria.css" />
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="app-header">
+    <div class="container app-header__inner">
+      <a class="brand" href="../../index.html" aria-label="Volver a Para Alexandra">
+        <img class="brand__logo" src="../../logo.png" alt="Logo de Para Alexandra" width="36" height="36" />
+        <span class="brand__text">Para Alexandra</span>
+      </a>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-shared-music data-default-track="../../assets/audio/hasta-ese-entonces.mp3" aria-pressed="false" aria-label="Reproducir Hasta ese entonces">
+          <span data-music-glyph aria-hidden="true">▶</span>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a tema alba">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2" />
+            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4" />
+          </svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.7 6.7 0 0 0 10.7 10.7Z" />
+          </svg>
+        </button>
+        <a class="back-link" href="../../index.html">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+          <span>Inicio</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="gallery-hero" aria-labelledby="galeria-title">
+      <div class="container">
+        <p class="eyebrow" data-reveal>Galería visual</p>
+        <h1 class="gallery-hero__title" id="galeria-title" data-reveal style="--delay: 80">
+          Nueve instantes,<br /><em>ninguno con prisa.</em>
+        </h1>
+        <p class="gallery-hero__intro" data-reveal style="--delay: 150">
+          Luz, noche y calma. No son recuerdos nuestros: son pausas para mirar. Toca una imagen para verla de
+          cerca, o déjate llevar por el mosaico.
+        </p>
+      </div>
+    </section>
+
+    <section class="gallery" aria-label="Las imágenes">
+      <div class="container">
+        <div class="filters" id="filters" role="group" aria-label="Filtrar por categoría"></div>
+        <div class="masonry" id="masonry"></div>
+        <p class="gallery__empty" id="gallery-empty" hidden>
+          No hay imágenes en esta categoría. Prueba con otra.
+        </p>
+
+        <div class="gallery-close">
+          <p class="gallery-close__text" data-reveal>A veces mirar algo bonito ya es suficiente.</p>
+          <div class="gallery-close__actions" data-reveal style="--delay: 90">
+            <a class="btn btn--ghost" href="../musica/index.html">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+              Volver a la música
+            </a>
+            <a class="btn btn--primary" href="../../index.html">
+              Volver al inicio
+              <svg class="btn__arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>Galería visual · Para Alexandra</span>
+        <a class="footer__top-link" href="#contenido">
+          Volver arriba
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="shot-dialog" id="shot-dialog" aria-labelledby="shot-title">
+    <div class="lightbox">
+      <div class="lightbox__stage">
+        <img class="lightbox__img" id="shot-img" alt="" width="1400" height="933" />
+        <button class="lightbox__nav lightbox__nav--prev" type="button" data-prev aria-label="Imagen anterior">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+        </button>
+        <button class="lightbox__nav lightbox__nav--next" type="button" data-next aria-label="Imagen siguiente">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+        </button>
+        <button class="lightbox__close" type="button" data-close aria-label="Cerrar la imagen">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+        </button>
+      </div>
+      <div class="lightbox__bar">
+        <div>
+          <p class="lightbox__meta"><span id="shot-cat"></span><span>Galería</span></p>
+          <h2 class="lightbox__title" id="shot-title"></h2>
+          <p class="lightbox__caption" id="shot-caption"></p>
+        </div>
+        <p class="lightbox__count" id="shot-count"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="../../packages/audio/shared-music.js"></script>
+  <script src="../../assets/js/register-sw.js"></script>
+  <script type="module" src="assets/js/galeria.js"></script>
+</body>
+</html>

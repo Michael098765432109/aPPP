@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cartas y mensajes — Para Alexandra</title>
+  <meta
+    name="description"
+    content="Seis cartas y pequeños apartados escritos con cariño para Alexandra. Ábrelos cuando quieras; nada aquí pide una respuesta."
+  />
+  <meta name="theme-color" content="#be185d" />
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../icons/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../../icons/apple-touch-icon.png" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("js");
+      try {
+        var saved = localStorage.getItem("alexandra-theme");
+        if (saved === "light" || saved === "night") root.dataset.theme = saved;
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../../assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/cartas.css" />
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="app-header">
+    <div class="container app-header__inner">
+      <a class="brand" href="../../index.html" aria-label="Volver a Para Alexandra">
+        <img class="brand__logo" src="../../logo.png" alt="Logo de Para Alexandra" width="36" height="36" />
+        <span class="brand__text">Para Alexandra</span>
+      </a>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-shared-music data-default-track="../../assets/audio/hasta-ese-entonces.mp3" aria-pressed="false" aria-label="Reproducir Hasta ese entonces">
+          <span class="sound-bars" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </span>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a tema alba">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2" />
+            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4" />
+          </svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.7 6.7 0 0 0 10.7 10.7Z" />
+          </svg>
+        </button>
+        <a class="back-link" href="../../index.html">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+          <span>Inicio</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="app-hero" aria-labelledby="cartas-title">
+      <div class="container">
+        <p class="eyebrow" data-reveal>Cartas y mensajes</p>
+        <h1 class="app-hero__title" id="cartas-title" data-reveal style="--delay: 80">
+          <span data-letter-total>Seis</span> cartas,<br /><em>y un cariño sin prisa.</em>
+        </h1>
+        <p class="app-hero__intro" data-reveal style="--delay: 160">
+          Escribí esto despacio, pensando en ti. Puedes abrirlas en orden, saltarte alguna o volver otro día.
+          También encontrarás pequeñas notas sobre el cariño que quiero cuidar. Nada aquí espera una respuesta.
+        </p>
+        <p class="app-hero__hint" data-reveal style="--delay: 220">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5" />
+          </svg>
+          Toca un sobre para abrirlo
+        </p>
+      </div>
+    </section>
+
+    <section class="letters" aria-label="Las cartas">
+      <div class="container">
+        <div class="letters__grid" id="letters-grid"></div>
+        <noscript>
+          <p class="app-hero__intro">
+            Las cartas necesitan JavaScript para abrirse. Puedes leerlas también en el archivo
+            <code>packages/content/letters.js</code>.
+          </p>
+        </noscript>
+      </div>
+    </section>
+
+    <section class="love-notes" aria-labelledby="love-notes-title">
+      <div class="container">
+        <div class="love-notes__heading">
+          <p class="eyebrow" data-reveal>Pequeñas cosas que quería decirte</p>
+          <h2 class="section-title" id="love-notes-title" data-reveal>El cariño también vive en lo sencillo.</h2>
+          <p class="section-sub" data-reveal style="--delay: 90">
+            No son recuerdos inventados ni promesas grandiosas; son formas de nombrar el cuidado que me gustaría ofrecerte.
+          </p>
+        </div>
+        <div class="love-notes__grid" id="love-notes-grid"></div>
+      </div>
+    </section>
+
+    <section class="love-lines" aria-labelledby="love-lines-title">
+      <div class="container love-lines__inner">
+        <p class="eyebrow" data-reveal>Unas líneas para guardar</p>
+        <h2 class="love-lines__title" id="love-lines-title" data-reveal>A veces, querer es dejar que el otro respire.</h2>
+        <ul class="love-lines__list" id="love-lines-list"></ul>
+      </div>
+    </section>
+
+    <section class="extra-experiences" aria-labelledby="extra-experiences-title">
+      <div class="container">
+        <div class="love-notes__heading">
+          <p class="eyebrow" data-reveal>Más rincones para descubrir</p>
+          <h2 class="section-title" id="extra-experiences-title" data-reveal>Pequeñas experiencias hechas para ti.</h2>
+          <p class="section-sub" data-reveal style="--delay: 90">
+            Puedes entrar a cualquiera y volver aquí cuando quieras. Cada rincón tiene su propio ritmo.
+          </p>
+        </div>
+        <nav class="extra-experiences__grid" aria-label="Experiencias románticas para Alexandra">
+          <a class="extra-experience" href="../1-arbol-alexandra/index.html" data-reveal>
+            <span class="extra-experience__icon" aria-hidden="true">🌳</span>
+            <span><strong>Un árbol de amor</strong><small>Un corazón que florece y una dedicatoria.</small></span>
+            <span class="extra-experience__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="extra-experience" href="../2-regalos-alexandra/index.html" data-reveal style="--delay: 60">
+            <span class="extra-experience__icon" aria-hidden="true">🎁</span>
+            <span><strong>Regalitos para ti</strong><small>Recuerdos, una melodía y una carta.</small></span>
+            <span class="extra-experience__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="extra-experience" href="../3-galaxia-corazon-alexandra/index.html" data-reveal style="--delay: 120">
+            <span class="extra-experience__icon" aria-hidden="true">💗</span>
+            <span><strong>Galaxia corazón</strong><small>Una pausa bajo un cielo lleno de estrellas.</small></span>
+            <span class="extra-experience__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="extra-experience" href="../4-universo-3d-alexandra/index.html" data-reveal style="--delay: 180">
+            <span class="extra-experience__icon" aria-hidden="true">🌌</span>
+            <span><strong>Nuestro universo</strong><small>Explora un pequeño universo interactivo.</small></span>
+            <span class="extra-experience__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="extra-experience" href="../5-historia-huella-alexandra/index.html" data-reveal style="--delay: 240">
+            <span class="extra-experience__icon" aria-hidden="true">✨</span>
+            <span><strong>Una historia para ti</strong><small>Un recorrido de momentos y palabras.</small></span>
+            <span class="extra-experience__arrow" aria-hidden="true">↗</span>
+          </a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="cartas-note" aria-labelledby="cartas-note-title">
+      <div class="container cartas-note__inner">
+        <p class="cartas-note__quote" data-reveal>El cariño sincero también sabe dar espacio.</p>
+        <p class="cartas-note__text" data-reveal style="--delay: 90">
+          <span id="cartas-note-title">Cuando termines, puedes quedarte un rato en silencio o seguir con la música.</span>
+          Nada de esto es una prueba que tengas que aprobar.
+        </p>
+        <div class="cartas-note__actions" data-reveal style="--delay: 160">
+          <a class="btn btn--ghost" href="../../index.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+            Volver al inicio
+          </a>
+          <a class="btn btn--primary" href="../musica/index.html">
+            Seguir con la música
+            <svg class="btn__arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>Cartas y mensajes · Para Alexandra</span>
+        <a class="footer__top-link" href="#contenido">
+          Volver arriba
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="letter-dialog" id="letter-dialog" aria-labelledby="letter-title">
+    <article class="letter">
+      <header class="letter__bar">
+      <span id="letter-count">Carta 01 / 06</span>
+        <button class="icon-btn" type="button" data-close aria-label="Cerrar la carta">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+        </button>
+      </header>
+      <div class="letter__scroll" id="letter-scroll" tabindex="-1">
+        <p class="letter__kicker" id="letter-kicker"></p>
+        <h2 class="letter__title" id="letter-title"></h2>
+        <p class="letter__meta" id="letter-meta"></p>
+        <h3 class="letter__section-title" id="letter-section-title"></h3>
+        <div class="letter__body" id="letter-body"></div>
+        <p class="letter__ps" id="letter-ps" hidden></p>
+        <p class="letter__sign" id="letter-sign">Con cariño.</p>
+      </div>
+      <footer class="letter__nav">
+        <button class="letter__btn" type="button" data-prev>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+          <span>Anterior</span>
+        </button>
+        <div class="letter__dots" id="letter-dots" role="group" aria-label="Ir a una carta"></div>
+        <button class="letter__btn" type="button" data-next>
+          <span>Siguiente</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+        </button>
+      </footer>
+    </article>
+  </dialog>
+
+  <script src="../../packages/audio/shared-music.js"></script>
+  <script src="../../assets/js/register-sw.js"></script>
+  <script type="module" src="assets/js/cartas.js"></script>
+</body>
+</html>

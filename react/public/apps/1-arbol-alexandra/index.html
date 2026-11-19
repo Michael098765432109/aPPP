@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti, Alexandra ❤️</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a0b12;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lora', serif;
+    padding: 15px;
+    overflow-x: hidden;
+  }
+
+  .card {
+    background: #f5ebe0;
+    width: 100%;
+    max-width: 960px;
+    min-height: 560px;
+    border-radius: 24px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 35px 40px 25px;
+  }
+
+  #start-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    background: #f5ebe0;
+    transition: opacity 0.5s ease;
+  }
+
+  .heart-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Lora', serif;
+    font-size: 1.4rem;
+    color: #5c3a3a;
+    transition: transform 0.3s;
+  }
+  .heart-trigger:hover { transform: scale(1.08); }
+  .heart-trigger svg {
+    width: 54px;
+    height: 54px;
+    fill: #c9184a;
+    filter: drop-shadow(0 4px 10px rgba(201,24,74,0.35));
+    animation: pulse 1.4s infinite;
+  }
+  .heart-trigger span {
+    border-bottom: 2px solid #c9184a;
+    padding-bottom: 3px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+  }
+
+  #treeCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .content-layer {
+    position: relative;
+    z-index: 10;
+    width: 52%;
+    opacity: 0;
+    transition: opacity 1s ease;
+    color: #3d2c2e;
+    margin-top: 20px;
+  }
+
+  .message-box {
+    font-size: 1.15rem;
+    line-height: 1.75;
+    min-height: 240px;
+    white-space: pre-line;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    background: #c9184a;
+    vertical-align: middle;
+    animation: blink 0.8s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .timer-section {
+    position: relative;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    border-bottom: 2px solid #3d2c2e;
+    padding-bottom: 12px;
+    margin-top: 20px;
+  }
+  .timer-label {
+    font-size: 0.95rem;
+    color: #5c3a3a;
+    margin-bottom: 4px;
+  }
+  .timer-values {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: #2b1d1e;
+  }
+  .timer-values strong {
+    font-size: 1.65rem;
+    font-weight: 600;
+    color: #a4133c;
+  }
+
+  .music-pill {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    z-index: 30;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(201, 24, 74, 0.25);
+    border-radius: 50px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    color: #5c3a3a;
+  }
+  .music-btn {
+    background: #c9184a;
+    color: #fff;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    .card { padding: 65px 22px 22px; min-height: 640px; }
+    .content-layer { width: 100%; background: rgba(245, 235, 224, 0.82); padding: 15px; border-radius: 14px; backdrop-filter: blur(3px); }
+    .message-box { font-size: 1rem; min-height: 190px; }
+    .timer-values strong { font-size: 1.25rem; }
+  }
+</style>
+<link rel="stylesheet" href="../romantic-extras.css">
+</head>
+<body>
+
+<a class="extras-back" href="../../cartas.html">← Volver a Cartas</a>
+
+<div class="card" id="card">
+  <div class="music-pill">
+    <button class="music-btn" id="musicToggle" type="button" data-shared-music data-default-track="../../audio/hasta-ese-entonces.mp3" aria-pressed="false" aria-label="Reproducir Hasta ese entonces"><span data-music-glyph aria-hidden="true">▶</span></button>
+    <span id="musicTitle">Melodía para Alexandra</span>
+    <audio id="bgMusic" loop>
+      <source src="" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <div id="start-screen">
+    <button class="heart-trigger" id="startBtn">
+      <svg viewBox="0 0 32 29.6">
+        <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+      </svg>
+      <span>Para Alexandra</span>
+    </button>
+  </div>
+
+  <canvas id="treeCanvas"></canvas>
+
+  <div class="content-layer" id="contentLayer">
+    <div class="message-box" id="typewriter"></div>
+  </div>
+
+  <div class="timer-section" id="timerSection">
+    <div class="timer-label">Mi amor por ti comenzó hace...</div>
+    <div class="timer-values" id="timerDisplay">
+      <strong>355</strong> días <strong>17</strong> horas <strong>08</strong> minutos <strong>06</strong> segundos
+    </div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('treeCanvas');
+  const ctx = canvas.getContext('2d');
+  const card = document.getElementById('card');
+  const startScreen = document.getElementById('start-screen');
+  const startBtn = document.getElementById('startBtn');
+  const contentLayer = document.getElementById('contentLayer');
+  const timerSection = document.getElementById('timerSection');
+  const typewriterEl = document.getElementById('typewriter');
+
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  let isPlaying = false;
+  let synthInterval = null;
+
+  function playSoftPianoNote() {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [261.63, 329.63, 392.00, 493.88, 523.25, 392.00, 329.63];
+      let idx = 0;
+      synthInterval = setInterval(() => {
+        if (!isPlaying) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = notes[idx % notes.length];
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.4);
+        idx++;
+      }, 900);
+    } catch (e) {}
+  }
+
+  function toggleMusic(forcePlay = false) {
+    if (forcePlay && isPlaying) return;
+    if (!isPlaying || forcePlay) {
+      isPlaying = true;
+      musicToggle.textContent = '❚❚';
+      if (bgMusic.querySelector('source').getAttribute('src')) {
+        bgMusic.play().catch(() => {});
+      } else if (!synthInterval) {
+        playSoftPianoNote();
+      }
+    } else {
+      isPlaying = false;
+      musicToggle.textContent = '▶';
+      bgMusic.pause();
+    }
+  }
+  document.addEventListener('alexandra:music-state', (event) => {
+    isPlaying = event.detail.playing;
+  });
+
+  let W, H;
+  function resize() {
+    W = canvas.width = card.offsetWidth;
+    H = canvas.height = card.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const colors = ['#c9184a', '#ff4d6d', '#ff758f', '#ff8fa3', '#a4133c', '#ffb3c1', '#e01e37'];
+  let leaves = [];
+  let fallingLeaves = [];
+  let treeOffsetX = 0;
+  let targetOffsetX = 0;
+
+  function drawHeart(x, y, size, color, angle = 0, alpha = 1) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(0, -size / 4);
+    ctx.bezierCurveTo(size / 2, -size, size * 1.2, -size / 3, 0, size);
+    ctx.bezierCurveTo(-size * 1.2, -size / 3, -size / 2, -size, 0, -size / 4);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function generateCrown(cx, cy, scale) {
+    leaves = [];
+    for (let i = 0; i < 420; i++) {
+      const t = Math.random() * Math.PI * 2;
+      const r = Math.sqrt(Math.random());
+      const hx = 16 * Math.pow(Math.sin(t), 3);
+      const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+      leaves.push({
+        x: cx + hx * r * scale,
+        y: cy + hy * r * scale,
+        size: 5 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        angle: (Math.random() - 0.5) * 1.2,
+        scale: 0,
+        delay: Math.random() * 60
+      });
+    }
+  }
+
+  let frame = 0;
+  let phase = 'idle';
+  let dotY = 0;
+  let trunkProgress = 0;
+
+  function drawTrunk(baseX, baseY, progress) {
+    ctx.save();
+    ctx.strokeStyle = '#5c3a21';
+    ctx.lineCap = 'round';
+
+    const trunkH = 150 * Math.min(1, progress * 1.4);
+    ctx.lineWidth = 14;
+    ctx.beginPath();
+    ctx.moveTo(baseX, baseY);
+    ctx.quadraticCurveTo(baseX - 6, baseY - trunkH * 0.5, baseX, baseY - trunkH);
+    ctx.stroke();
+
+    if (progress > 0.4) {
+      const bp = (progress - 0.4) / 0.6;
+      ctx.lineWidth = 7;
+      ctx.beginPath();
+      ctx.moveTo(baseX - 2, baseY - trunkH * 0.65);
+      ctx.quadraticCurveTo(baseX - 45 * bp, baseY - trunkH * 0.85, baseX - 75 * bp, baseY - trunkH * 1.15);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(baseX + 2, baseY - trunkH * 0.7);
+      ctx.quadraticCurveTo(baseX + 45 * bp, baseY - trunkH * 0.9, baseX + 75 * bp, baseY - trunkH * 1.18);
+      ctx.stroke();
+
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(baseX, baseY - trunkH * 0.85);
+      ctx.lineTo(baseX - 10 * bp, baseY - trunkH * 1.3);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    const groundY = H - (window.innerWidth < 768 ? 90 : 82);
+    const centerX = W / 2 + treeOffsetX;
+
+    if (phase === 'drop') {
+      dotY += (groundY - dotY) * 0.14;
+      drawHeart(centerX, dotY, 10, '#c9184a');
+      if (Math.abs(groundY - dotY) < 2) {
+        phase = 'grow';
+      }
+    } else if (phase === 'grow' || phase === 'bloom' || phase === 'shift') {
+      if (trunkProgress < 1) {
+        trunkProgress += 0.025;
+      } else if (phase === 'grow') {
+        phase = 'bloom';
+        generateCrown(0, groundY - 210, window.innerWidth < 768 ? 6.2 : 7.8);
+      }
+
+      drawTrunk(centerX, groundY, trunkProgress);
+
+      if (phase === 'bloom' || phase === 'shift') {
+        let allBloomed = true;
+        leaves.forEach(l => {
+          if (l.delay > 0) {
+            l.delay--;
+            allBloomed = false;
+          } else if (l.scale < 1) {
+            l.scale += 0.06;
+            allBloomed = false;
+          }
+          drawHeart(centerX + l.x, l.y, l.size * l.scale, l.color, l.angle);
+        });
+
+        if (allBloomed && phase === 'bloom') {
+          phase = 'shift';
+          targetOffsetX = window.innerWidth < 768 ? 0 : W * 0.23;
+          setTimeout(startStory, 600);
+        }
+      }
+
+      if (phase === 'shift') {
+        treeOffsetX += (targetOffsetX - treeOffsetX) * 0.06;
+        if (Math.random() < 0.08 && leaves.length > 0) {
+          const src = leaves[Math.floor(Math.random() * leaves.length)];
+          fallingLeaves.push({
+            x: centerX + src.x,
+            y: src.y,
+            vx: -0.6 - Math.random() * 0.8,
+            vy: 0.8 + Math.random() * 1.1,
+            size: src.size,
+            color: src.color,
+            angle: Math.random() * Math.PI
+          });
+        }
+        fallingLeaves.forEach((fl, i) => {
+          fl.x += fl.vx + Math.sin(frame * 0.05 + i) * 0.4;
+          fl.y += fl.vy;
+          fl.angle += 0.03;
+          drawHeart(fl.x, fl.y, fl.size, fl.color, fl.angle, 0.85);
+          if (fl.y > groundY) fallingLeaves.splice(i, 1);
+        });
+      }
+    }
+
+    frame++;
+    requestAnimationFrame(animate);
+  }
+
+  const textToType = `Para el amor de mi vida, Alexandra:\n\nSi pudiera elegir un lugar seguro, sería a tu lado.\n\nCuanto más tiempo estoy contigo más te amo.\n\n— Te Amo Alexandra ❤️`;
+  let charIndex = 0;
+
+  function startStory() {
+    contentLayer.style.opacity = '1';
+    timerSection.style.opacity = '1';
+    typeNextChar();
+  }
+
+  function typeNextChar() {
+    if (charIndex <= textToType.length) {
+      typewriterEl.innerHTML = textToType.slice(0, charIndex) + '<span class="cursor"></span>';
+      charIndex++;
+      setTimeout(typeNextChar, 45);
+    }
+  }
+
+  const startDate = new Date(Date.now() - ((355 * 86400 + 17 * 3600 + 8 * 60 + 6) * 1000));
+  function updateTimer() {
+    const diff = Math.floor((Date.now() - startDate.getTime()) / 1000);
+    const days = Math.floor(diff / 86400);
+    const hours = String(Math.floor((diff % 86400) / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+    const secs = String(diff % 60).padStart(2, '0');
+    document.getElementById('timerDisplay').innerHTML =
+      `<strong>${days}</strong> días <strong>${hours}</strong> horas <strong>${mins}</strong> minutos <strong>${secs}</strong> segundos`;
+  }
+  setInterval(updateTimer, 1000);
+
+  startBtn.addEventListener('click', () => {
+    window.AlexandraMusic.play().catch(() => {});
+    startScreen.style.opacity = '0';
+    setTimeout(() => startScreen.style.display = 'none', 500);
+    dotY = H / 2;
+    phase = 'drop';
+  });
+
+  animate();
+  </script>
+<script src="../../packages/audio/shared-music.js"></script>
+</body>
+</html>

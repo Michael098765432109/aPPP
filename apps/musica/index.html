@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Música y ambiente — Para Alexandra</title>
+  <meta
+    name="description"
+    content="Tres atmósferas generadas en vivo para bajar el ruido: amanecer, lluvia y estrellas. También puedes poner una canción tuya."
+  />
+  <meta name="theme-color" content="#be185d" />
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../icons/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../../icons/apple-touch-icon.png" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("js");
+      try {
+        var saved = localStorage.getItem("alexandra-theme");
+        if (saved === "light" || saved === "night") root.dataset.theme = saved;
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../../assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/musica.css" />
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="app-header">
+    <div class="container app-header__inner">
+      <a class="brand" href="../../index.html" aria-label="Volver a Para Alexandra">
+        <img class="brand__logo" src="../../logo.png" alt="Logo de Para Alexandra" width="36" height="36" />
+        <span class="brand__text">Para Alexandra</span>
+      </a>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-shared-music data-default-track="../../assets/audio/hasta-ese-entonces.mp3" aria-pressed="false" aria-label="Reproducir Hasta ese entonces">
+          <span data-music-glyph aria-hidden="true">▶</span>
+        </button>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="Cambiar a tema alba">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2" />
+            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4" />
+          </svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.7 6.7 0 0 0 10.7 10.7Z" />
+          </svg>
+        </button>
+        <a class="back-link" href="../../index.html">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+          <span>Inicio</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="stage" id="stage" data-mood="amanecer" aria-labelledby="musica-title">
+      <div class="container stage__inner">
+        <div class="stage__copy">
+          <p class="eyebrow" data-reveal>Música y ambiente</p>
+          <h1 class="stage__title" id="musica-title" data-reveal style="--delay: 80">
+            Baja el ruido.
+            <em>Quédate un rato.</em>
+          </h1>
+          <p class="stage__intro" data-reveal style="--delay: 150">
+            No es una playlist. Es un ambiente que se genera en vivo, con notas que aparecen y se van. Puedes
+            dejarlo de fondo mientras lees, respiras o no haces nada.
+          </p>
+
+          <div class="now" data-reveal style="--delay: 210">
+            <span class="now__dot" aria-hidden="true"></span>
+            <span id="status" role="status" aria-live="polite">Amanecer · en pausa</span>
+          </div>
+
+          <div class="transport" data-reveal style="--delay: 260">
+            <button class="play" type="button" data-play aria-pressed="false" aria-label="Reproducir ambiente">
+              <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 5.5v13a1 1 0 0 0 1.53.85l10-6.5a1 1 0 0 0 0-1.7l-10-6.5A1 1 0 0 0 8 5.5Z" />
+              </svg>
+              <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="6" y="4.5" width="4" height="15" rx="1.2" />
+                <rect x="14" y="4.5" width="4" height="15" rx="1.2" />
+              </svg>
+            </button>
+            <div class="volume">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M11 5 6.5 8.5H3v7h3.5L11 19V5Z" />
+                <path d="M15 9a4 4 0 0 1 0 6M17.8 6.2a8 8 0 0 1 0 11.6" />
+              </svg>
+              <label class="sr-only" for="volume">Volumen</label>
+              <input id="volume" type="range" min="0" max="100" step="1" value="55" data-volume />
+              <span class="volume__value" data-volume-value>55</span>
+            </div>
+          </div>
+
+          <div class="moods" role="group" aria-label="Elegir una atmósfera" data-reveal style="--delay: 310">
+            <button class="mood" type="button" data-mood-id="amanecer" aria-pressed="true">
+              <span class="mood__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
+                </svg>
+              </span>
+              <span class="mood__label">Amanecer</span>
+              <span class="mood__hint">Luz que entra despacio</span>
+            </button>
+            <button class="mood" type="button" data-mood-id="lluvia" aria-pressed="false">
+              <span class="mood__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 15a4.5 4.5 0 0 1-.4-9A6 6 0 0 1 18 7.5 3.75 3.75 0 0 1 17.5 15H7Z" />
+                  <path d="M8 18.5v1.5M12 18v2M16 18.5v1.5" />
+                </svg>
+              </span>
+              <span class="mood__label">Lluvia</span>
+              <span class="mood__hint">Ruido que calma</span>
+            </button>
+            <button class="mood" type="button" data-mood-id="estrellas" aria-pressed="false">
+              <span class="mood__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3.5 13.8 9l5.7.4-4.4 3.6 1.4 5.5L12 15.4l-4.5 3.1 1.4-5.5L4.5 9.4 10.2 9 12 3.5Z" />
+                </svg>
+              </span>
+              <span class="mood__label">Estrellas</span>
+              <span class="mood__hint">Noche abierta</span>
+            </button>
+          </div>
+
+          <div class="upload" data-reveal style="--delay: 350">
+            <input class="sr-only" type="file" id="audio-file" accept="audio/*" data-file />
+            <label class="btn btn--ghost btn--sm" for="audio-file">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 16V4M7 9l5-5 5 5M4 20h16" />
+              </svg>
+              Poner una canción
+            </label>
+            <button class="btn btn--quiet btn--sm" type="button" data-file-resume hidden>Mi canción</button>
+            <button class="btn btn--quiet btn--sm" type="button" data-clear-file hidden>Volver a Hasta ese entonces</button>
+            <span class="upload__name" data-file-name>O escucha tu propia música</span>
+          </div>
+          <p class="stage__note">El ambiente se sintetiza en tu navegador. Nada se sube a ningún lado.</p>
+        </div>
+
+        <div class="stage__visual" data-reveal style="--delay: 200">
+          <div class="orb-shell">
+            <canvas class="viz" data-viz aria-hidden="true"></canvas>
+            <div class="orb-breathe" aria-hidden="true">
+              <span class="orb"></span>
+            </div>
+            <span class="orb-caption" aria-hidden="true">Respira con el círculo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="music-info" aria-labelledby="sounds-title">
+      <div class="container">
+        <div class="music-info__head">
+          <p class="eyebrow">Tres atmósferas</p>
+          <h2 class="section-title" id="sounds-title" data-reveal>Tres formas de bajar el ruido.</h2>
+          <p class="section-sub" data-reveal style="--delay: 80">
+            Cada una cambia el filtro, el pulso y la lluvia. Nunca suena exactamente igual dos veces.
+          </p>
+        </div>
+
+        <div class="sounds">
+          <button class="sound-card sound-card--amanecer" type="button" data-mood-id="amanecer" aria-pressed="true" data-reveal>
+            <span class="sound-card__top">
+              <span class="sound-card__icon" aria-hidden="true">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
+                </svg>
+              </span>
+              <span class="sound-card__state" data-state>Amanecer</span>
+            </span>
+            <span class="sound-card__title">Amanecer</span>
+            <span class="sound-card__desc">Pads cálidos que suben como la luz de la mañana. Para empezar sin prisa.</span>
+            <span class="sound-card__meta">Tonalidad mayor · 15 s por acorde</span>
+          </button>
+
+          <button class="sound-card sound-card--lluvia" type="button" data-mood-id="lluvia" aria-pressed="false" data-reveal style="--delay: 100">
+            <span class="sound-card__top">
+              <span class="sound-card__icon" aria-hidden="true">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 15a4.5 4.5 0 0 1-.4-9A6 6 0 0 1 18 7.5 3.75 3.75 0 0 1 17.5 15H7Z" />
+                  <path d="M8 18.5v1.5M12 18v2M16 18.5v1.5" />
+                </svg>
+              </span>
+              <span class="sound-card__state" data-state>Elegir</span>
+            </span>
+            <span class="sound-card__title">Lluvia</span>
+            <span class="sound-card__desc">Ruido suave y notas bajas, como una ventana entreabierta. Para cuando la cabeza no se apaga.</span>
+            <span class="sound-card__meta">Filtro oscuro · lluvia sintetizada</span>
+          </button>
+
+          <button class="sound-card sound-card--estrellas" type="button" data-mood-id="estrellas" aria-pressed="false" data-reveal style="--delay: 200">
+            <span class="sound-card__top">
+              <span class="sound-card__icon" aria-hidden="true">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3.5 13.8 9l5.7.4-4.4 3.6 1.4 5.5L12 15.4l-4.5 3.1 1.4-5.5L4.5 9.4 10.2 9 12 3.5Z" />
+                </svg>
+              </span>
+              <span class="sound-card__state" data-state>Elegir</span>
+            </span>
+            <span class="sound-card__title">Estrellas</span>
+            <span class="sound-card__desc">Acordes lentos, casi suspendidos, con mucha reverberación. Para mirar el techo y respirar.</span>
+            <span class="sound-card__meta">Registro grave · 19 s por acorde</span>
+          </button>
+        </div>
+
+        <div class="music-close" data-reveal>
+          <p class="music-close__text">No hay ninguna canción que tengas que escuchar hasta el final.</p>
+          <div class="music-close__actions">
+            <a class="btn btn--ghost" href="../../index.html">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+              Volver al inicio
+            </a>
+            <a class="btn btn--primary" href="../galeria/index.html">
+              Ver la galería
+              <svg class="btn__arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>Música y ambiente · Para Alexandra</span>
+        <a class="footer__top-link" href="#contenido">
+          Volver arriba
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../packages/audio/shared-music.js"></script>
+  <script src="../../assets/js/register-sw.js"></script>
+  <script type="module" src="assets/js/musica.js"></script>
+</body>
+</html>

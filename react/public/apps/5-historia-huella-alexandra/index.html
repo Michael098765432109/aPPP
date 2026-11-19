@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti, Alexandra ❤️</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #120308;
+    color: #fff5f7;
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  #petalsCanvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  #lock-screen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, #380816 0%, #0f0206 100%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    transition: opacity 0.9s ease, visibility 0.9s;
+  }
+  #lock-screen.unlocked {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .script-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(255, 42, 85, 0.5);
+    margin-bottom: 35px;
+  }
+
+  .scanner-wrap {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .progress-ring {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+  }
+  .progress-ring circle {
+    fill: transparent;
+    stroke-width: 4;
+  }
+  .ring-bg { stroke: rgba(255, 255, 255, 0.12); }
+  .ring-fill {
+    stroke: #ff1e42;
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 8px #ff1e42);
+    transition: stroke-dashoffset 0.05s linear;
+  }
+
+  .fingerprint-icon {
+    width: 78px;
+    height: 78px;
+    fill: #e0d6d8;
+    transition: fill 0.3s, filter 0.3s, transform 0.2s;
+  }
+  .scanner-wrap.pressing .fingerprint-icon {
+    fill: #ff1e42;
+    filter: drop-shadow(0 0 14px #ff1e42);
+    transform: scale(0.96);
+  }
+
+  #scan-hint {
+    margin-top: 28px;
+    font-size: 1.15rem;
+    color: #f4cdd4;
+    letter-spacing: 0.5px;
+  }
+
+  main {
+    position: relative;
+    z-index: 10;
+  }
+
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 75px 22px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #e5989b;
+    margin-bottom: 10px;
+  }
+
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top, rgba(164, 19, 60, 0.35), transparent 70%);
+  }
+  .hero h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(3.4rem, 8vw, 5.5rem);
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: #ff2a55; }
+  .hero-sub {
+    font-style: italic;
+    font-size: 1.45rem;
+    color: #ffd6de;
+    margin-bottom: 36px;
+  }
+
+  .countdown-grid {
+    display: flex;
+    gap: clamp(16px, 4vw, 42px);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .count-box span {
+    display: block;
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .count-box small {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    color: #e5989b;
+  }
+
+  .dedication p {
+    font-size: clamp(1.2rem, 2.6vw, 1.45rem);
+    line-height: 1.85;
+    max-width: 660px;
+    margin: 20px auto;
+    color: #f8e1e6;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 35px;
+  }
+  .polaroid {
+    background: #fff;
+    color: #2b1318;
+    padding: 12px 12px 26px;
+    border-radius: 4px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+    transform: rotate(-1.5deg);
+    transition: transform 0.3s;
+  }
+  .polaroid:nth-child(even) { transform: rotate(1.5deg); }
+  .polaroid:hover { transform: scale(1.04) rotate(0deg); }
+  .polaroid-img {
+    width: 100%;
+    height: 190px;
+    background: linear-gradient(135deg, #590d22, #a4133c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+  .polaroid p {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.55rem;
+    margin-top: 10px;
+  }
+
+  .timeline {
+    position: relative;
+    max-width: 680px;
+    margin: 40px auto 0;
+    text-align: left;
+    border-left: 2px solid rgba(255, 42, 85, 0.45);
+    padding-left: 26px;
+  }
+  .tl-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -33px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff2a55;
+    box-shadow: 0 0 10px #ff2a55;
+  }
+  .tl-date {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: #ff758f;
+  }
+  .tl-item h3 { font-size: 1.45rem; margin: 4px 0 6px; }
+  .tl-item p { font-size: 1.05rem; color: #e8cfd4; line-height: 1.6; }
+
+  .envelope-wrapper {
+    max-width: 440px;
+    margin: 30px auto;
+    cursor: pointer;
+  }
+  .envelope {
+    background: linear-gradient(135deg, #d4a373, #bc8a5f);
+    height: 250px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.55);
+    overflow: hidden;
+  }
+  .envelope::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 220px solid transparent;
+    border-right: 220px solid transparent;
+    border-top: 135px solid #e6ccb2;
+  }
+  .wax-seal {
+    position: relative;
+    z-index: 2;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #b51736;
+    border: 3px solid #800f2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+  }
+  .envelope:hover .wax-seal { transform: scale(1.1); }
+
+  .letter-modal {
+    display: none;
+    background: #fcf8f2;
+    color: #2b181c;
+    padding: 36px 28px;
+    border-radius: 10px;
+    text-align: left;
+    max-width: 560px;
+    margin: 20px auto;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.65);
+    animation: fadeUp 0.5s ease;
+  }
+  .letter-modal.open { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .letter-modal h3 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.3rem;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .letter-modal p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+
+  .music-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 20px 24px;
+    max-width: 440px;
+    margin: 25px auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .play-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ff2a55;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 5px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    width: 38%;
+    height: 100%;
+    background: #ff2a55;
+  }
+</style>
+<link rel="stylesheet" href="../romantic-extras.css">
+</head>
+<body>
+
+<a class="extras-back" href="../../cartas.html">← Volver a Cartas</a>
+
+<canvas id="petalsCanvas"></canvas>
+
+<div id="lock-screen">
+  <h1 class="script-title">Para ti, Alexandra</h1>
+
+  <div class="scanner-wrap" id="scanner">
+    <svg class="progress-ring" width="150" height="150">
+      <circle class="ring-bg" cx="75" cy="75" r="67"></circle>
+      <circle class="ring-fill" id="ringFill" cx="75" cy="75" r="67"></circle>
+    </svg>
+    <svg class="fingerprint-icon" viewBox="0 0 24 24">
+      <path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28zM3.5 9.72c-.1 0-.2-.03-.29-.09-.23-.16-.28-.47-.12-.7.99-1.4 2.25-2.5 3.75-3.27C9.98 4.04 14 4.03 17.15 5.65c1.5.77 2.76 1.86 3.75 3.25.16.22.11.54-.12.7-.23.16-.54.11-.7-.12-.9-1.26-2.04-2.25-3.39-2.94-2.87-1.47-6.54-1.47-9.4.01-1.36.7-2.5 1.7-3.4 2.96-.08.14-.23.21-.39.21zm6.25 12.07c-.13 0-.26-.05-.35-.15-.87-.87-1.34-1.43-2.01-2.64-.69-1.23-1.05-2.73-1.05-4.34 0-2.97 2.54-5.39 5.66-5.39s5.66 2.42 5.66 5.39c0 .28-.22.5-.5.5s-.5-.22-.5-.5c0-2.42-2.09-4.39-4.66-4.39-2.57 0-4.66 1.97-4.66 4.39 0 1.44.32 2.77.93 3.85.64 1.15 1.08 1.64 1.85 2.42.19.2.19.51 0 .71-.11.1-.24.15-.37.15zm7.17-1.85c-1.19 0-2.24-.3-3.1-.89-1.49-1.01-2.38-2.65-2.38-4.39 0-.28.22-.5.5-.5s.5.22.5.5c0 1.41.72 2.74 1.94 3.56.71.48 1.54.71 2.54.71.24 0 .64-.03 1.04-.1.27-.05.53.13.58.41.05.27-.13.53-.41.58-.57.11-1.07.12-1.21.12zM14.91 22c-.04 0-.09-.01-.13-.02-1.59-.44-2.63-1.03-3.72-2.1-1.4-1.39-2.17-3.24-2.17-5.22 0-1.62 1.38-2.94 3.08-2.94 1.7 0 3.08 1.32 3.08 2.94 0 1.07.93 1.94 2.08 1.94s2.08-.87 2.08-1.94c0-3.77-3.25-6.83-7.25-6.83-2.84 0-5.44 1.58-6.61 4.03-.39.81-.59 1.76-.59 2.8 0 .78.07 2.01.67 3.61.1.26-.03.55-.29.64-.26.1-.55-.04-.64-.29-.49-1.31-.73-2.61-.73-3.96 0-1.2.23-2.29.68-3.24 1.33-2.79 4.28-4.6 7.51-4.6 4.55 0 8.25 3.51 8.25 7.83 0 1.62-1.38 2.94-3.08 2.94s-3.08-1.32-3.08-2.94c0-1.07-.93-1.94-2.08-1.94s-2.08.87-2.08 1.94c0 1.71.66 3.31 1.87 4.51.95.94 1.86 1.46 3.27 1.85.27.07.42.35.35.61-.05.23-.26.38-.47.38z"/>
+    </svg>
+  </div>
+
+  <p id="scan-hint">Mantén presionada la huella ❤️</p>
+</div>
+
+<main>
+  <section class="hero">
+    <h1>Tú <span>y</span> Alexandra</h1>
+    <div class="hero-sub">cada instante a tu lado</div>
+
+    <div class="countdown-grid">
+      <div class="count-box"><span id="c-days">433</span><small>DÍAS</small></div>
+      <div class="count-box"><span id="c-hours">16</span><small>HORAS</small></div>
+      <div class="count-box"><span id="c-mins">41</span><small>MINUTOS</small></div>
+      <div class="count-box"><span id="c-secs">03</span><small>SEGUNDOS</small></div>
+    </div>
+  </section>
+
+  <section class="dedication">
+    <div class="eyebrow">DEDICATORIA</div>
+    <h2 class="script-title">Para ti, Alexandra</h2>
+    <p>Este tiempo volvió a confirmar que el tiempo se puede medir en miradas. Que las palabras pueden volverse caricia y que un «hola» al amanecer puede sostener el resto del día.</p>
+    <p>Hoy celebro un día más contigo, otro pedacito de vida donde sigues apareciendo como mi parte favorita del día.</p>
+    <div class="script-title" style="font-size:2.4rem; margin-top:20px;">Te quiero mucho, mi amor.</div>
+  </section>
+
+  <section>
+    <div class="eyebrow">MEMORIAS</div>
+    <h2 class="script-title">Nuestros momentos</h2>
+    <div class="gallery-grid">
+      <div class="polaroid">
+        <div class="polaroid-img">🌹</div>
+        <p>la primera vez</p>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img">✨</div>
+        <p>aquella tarde</p>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img">👀</div>
+        <p>tus ojos</p>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-img">🌙</div>
+        <p>esa noche</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">NUESTRA HISTORIA</div>
+    <h2 class="script-title">Línea del tiempo</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">EL COMIENZO</div>
+        <h3>El día que te conocí</h3>
+        <p>Aquella primera mirada que decidió, sin avisar, que todo iba a cambiar para bien.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">NUESTRO MOMENTO</div>
+        <h3>Nuestra primera cita</h3>
+        <p>Charlas, risas tímidas y horas que se sintieron como dos minutos a tu lado.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">MI CONFESIÓN</div>
+        <h3>Te dije que te amaba</h3>
+        <p>Sin red, sin escenario. Solo tú, yo y la certeza de que ya era tarde para callarlo.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">HOY Y SIEMPRE</div>
+        <h3>Otro día contigo, Alexandra</h3>
+        <p>Y todavía me sorprende encontrarte cada día. Que sean muchos meses y años más.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">UNA CARTA</div>
+    <h2 class="script-title">Ábrela despacio</h2>
+    <div class="envelope-wrapper" id="envelopeBtn">
+      <div class="envelope">
+        <div class="wax-seal">❤️</div>
+      </div>
+      <p style="font-size:0.9rem; color:#e5989b; margin-top:10px;">toca el sobre para abrir</p>
+    </div>
+
+    <div class="letter-modal" id="letterPaper">
+      <h3>Alexandra,</h3>
+      <p>Si estás leyendo esto, es porque sigues iluminando mis días con esa forma tan tuya de ser.</p>
+      <p>Quería escribirte algo bonito, de esos textos que la gente guarda en captura y que se ven preciosos en cualquier idioma. Pero solo me sale decirte lo de siempre: que contigo todo es más fácil. Despertar, reír, equivocarme, volver.</p>
+      <p>Gracias por las charlas largas, por tu sonrisa y por ser mi persona favorita. Un día más contigo se siente como una promesa bonita: queriéndote más que ayer.</p>
+      <p style="text-align:right; font-family:'Great Vibes', cursive; font-size:1.9rem;">— Siempre tuyo</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">NUESTRA CANCIÓN</div>
+    <h2 class="script-title">Bailemos otra vez</h2>
+
+    <div class="music-card">
+      <button class="play-btn" id="songToggle" type="button" data-default-track="../../audio/hasta-ese-entonces.mp3" aria-pressed="false" aria-label="Reproducir canción"><span data-music-glyph aria-hidden="true">▶</span></button>
+      <div style="text-align:left; flex:1;">
+        <div style="font-weight:600; font-size:1.1rem;">Nuestra canción</div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:0.65rem; letter-spacing:2px; color:#e5989b; margin-bottom:8px;">PARA ALEXANDRA</div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+      </div>
+      <audio id="mainSong" loop>
+        <source src="" type="audio/mpeg">
+      </audio>
+    </div>
+
+    <div style="margin-top:60px;">
+      <div class="eyebrow">Y AL FINAL SOLO QUEDA ESTO</div>
+      <h2 class="script-title" style="font-size:clamp(3.2rem, 7vw, 5rem);">Te amo,<br><span style="color:#ff2a55;">Alexandra.</span></h2>
+      <p style="font-size:1.25rem; color:#ffd6de;">Hoy, mañana, y todos los momentos bonitos que nos queden.</p>
+      <p style="margin-top:14px; font-size:0.95rem; color:#e5989b;">— Con todo mi amor ❤️ —</p>
+    </div>
+  </section>
+</main>
+
+<script>
+  const scanner = document.getElementById('scanner');
+  const ringFill = document.getElementById('ringFill');
+  const scanHint = document.getElementById('scan-hint');
+  const lockScreen = document.getElementById('lock-screen');
+
+  let progress = 0;
+  let pressing = false;
+  let unlocked = false;
+  const maxDash = 420;
+
+  function updateScanner() {
+    if (unlocked) return;
+    if (pressing) {
+      progress += 1.4;
+      if (progress < 35) scanHint.textContent = "Escaneando...";
+      else if (progress < 70) scanHint.textContent = "Verificando latidos ❤️";
+      else if (progress < 98) scanHint.textContent = "Casi listo...";
+      else {
+        unlocked = true;
+        progress = 100;
+        scanHint.textContent = "Huella reconocida ❤️ Bienvenida, Alexandra";
+        playAudio(true);
+        setTimeout(() => lockScreen.classList.add('unlocked'), 900);
+      }
+    } else if (progress > 0) {
+      progress = Math.max(0, progress - 2.5);
+      if (progress === 0) scanHint.textContent = "Mantén presionada la huella ❤️";
+    }
+
+    ringFill.style.strokeDashoffset = maxDash - (maxDash * progress) / 100;
+    requestAnimationFrame(updateScanner);
+  }
+  updateScanner();
+
+  const startPress = (e) => { e.preventDefault(); pressing = true; scanner.classList.add('pressing'); };
+  const endPress = () => { pressing = false; scanner.classList.remove('pressing'); };
+
+  scanner.addEventListener('mousedown', startPress);
+  scanner.addEventListener('touchstart', startPress);
+  window.addEventListener('mouseup', endPress);
+  window.addEventListener('touchend', endPress);
+
+  document.getElementById('envelopeBtn').addEventListener('click', () => {
+    document.getElementById('letterPaper').classList.toggle('open');
+  });
+
+  const baseDate = new Date(Date.now() - ((433 * 86400 + 16 * 3600 + 41 * 60 + 3) * 1000));
+  setInterval(() => {
+    const diff = Math.floor((Date.now() - baseDate.getTime()) / 1000);
+    document.getElementById('c-days').textContent = Math.floor(diff / 86400);
+    document.getElementById('c-hours').textContent = String(Math.floor((diff % 86400) / 3600)).padStart(2, '0');
+    document.getElementById('c-mins').textContent = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+    document.getElementById('c-secs').textContent = String(diff % 60).padStart(2, '0');
+  }, 1000);
+
+  const songToggle = document.getElementById('songToggle');
+  let isPlaying = false;
+
+  function playAudio(force = false) {
+    const action = force ? window.AlexandraMusic.play() : window.AlexandraMusic.toggle();
+    action.catch(() => {});
+  }
+  songToggle.addEventListener('click', () => playAudio());
+  document.addEventListener('alexandra:music-state', (event) => { isPlaying = event.detail.playing; });
+
+  const pCanvas = document.getElementById('petalsCanvas');
+  const pCtx = pCanvas.getContext('2d');
+  let PW, PH;
+  function resizeP() {
+    PW = pCanvas.width = window.innerWidth;
+    PH = pCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeP);
+  resizeP();
+
+  const petals = Array.from({ length: 45 }, () => ({
+    x: Math.random() * PW,
+    y: Math.random() * PH,
+    r: 4 + Math.random() * 5,
+    vy: 0.6 + Math.random() * 1.2,
+    vx: (Math.random() - 0.5) * 0.8,
+    angle: Math.random() * Math.PI,
+    color: Math.random() > 0.4 ? '#ff2a55' : '#ff8fa3'
+  }));
+
+  function animPetals() {
+    pCtx.clearRect(0, 0, PW, PH);
+    petals.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx + Math.sin(p.angle) * 0.4;
+      p.angle += 0.02;
+      if (p.y > PH) { p.y = -10; p.x = Math.random() * PW; }
+      pCtx.save();
+      pCtx.translate(p.x, p.y);
+      pCtx.rotate(p.angle);
+      pCtx.fillStyle = p.color;
+      pCtx.globalAlpha = 0.7;
+      pCtx.beginPath();
+      pCtx.ellipse(0, 0, p.r, p.r * 0.6, 0, 0, Math.PI * 2);
+      pCtx.fill();
+      pCtx.restore();
+    });
+    requestAnimationFrame(animPetals);
+  }
+  animPetals();
+</script>
+<script src="../../packages/audio/shared-music.js"></script>
+</body>
+</html>

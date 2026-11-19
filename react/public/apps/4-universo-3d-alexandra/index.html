@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una Galaxia de Amor para Alexandra</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body, html {
+    width: 100%;
+    height: 100%;
+    background: #06010a;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+  }
+
+  #intro-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, #1b0518 0%, #050108 100%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    transition: opacity 0.8s ease;
+  }
+  #intro-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.2;
+    margin-bottom: 14px;
+    text-shadow: 0 0 25px rgba(255, 42, 133, 0.6);
+  }
+  .intro-sub {
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    color: #ff85b3;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .enter-btn {
+    background: linear-gradient(90deg, #ff1e7a, #ff5e9e);
+    color: white;
+    border: none;
+    padding: 15px 34px;
+    border-radius: 50px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(255, 30, 122, 0.65);
+    transition: transform 0.25s;
+  }
+  .enter-btn:hover { transform: scale(1.06); }
+
+  canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+
+  #modal-card {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 1, 10, 0.72);
+    backdrop-filter: blur(6px);
+    z-index: 40;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #modal-card.open { display: flex; animation: popIn 0.35s ease; }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.88); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .modal-box {
+    background: linear-gradient(145deg, #2b0b22, #170614);
+    border: 1.5px solid #ff4d94;
+    border-radius: 22px;
+    max-width: 400px;
+    width: 100%;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(255, 30, 122, 0.45);
+  }
+  .modal-emoji { font-size: 4rem; margin-bottom: 12px; display: block; }
+  .modal-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.65rem;
+    color: #ff85b3;
+    margin-bottom: 10px;
+  }
+  .modal-box p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #f8d7e5;
+    margin-bottom: 22px;
+  }
+  .modal-back {
+    background: #ff2a85;
+    color: white;
+    border: none;
+    padding: 10px 26px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .music-hud {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 30;
+    background: rgba(30, 8, 25, 0.75);
+    border: 1px solid #ff4d94;
+    border-radius: 40px;
+    padding: 7px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+  .music-hud button {
+    background: #ff2a85;
+    color: white;
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+</style>
+<link rel="stylesheet" href="../romantic-extras.css">
+</head>
+<body>
+
+<a class="extras-back" href="../../cartas.html">â† Volver a Cartas</a>
+
+<div id="intro-overlay">
+  <div style="font-size:3.5rem; margin-bottom:12px;">ðŸ°ðŸ’—</div>
+  <h1>Una Galaxia de<br>Amor para Alexandra</h1>
+  <div class="intro-sub">Hecha solo para ti, mi vida</div>
+  <button class="enter-btn" id="enterBtn">ENTRAR A NUESTRO UNIVERSO</button>
+</div>
+
+<div class="music-hud">
+  <button id="toggleMusicBtn" type="button" data-default-track="../../audio/hasta-ese-entonces.mp3" aria-pressed="false" aria-label="Reproducir canciÃ³n"><span data-music-glyph aria-hidden="true">â–¶</span></button>
+  <span>Universo Alexandra</span>
+  <audio id="universeAudio" loop>
+    <source src="" type="audio/mpeg">
+  </audio>
+</div>
+
+<canvas id="scene"></canvas>
+
+<div id="modal-card">
+  <div class="modal-box">
+    <span class="modal-emoji" id="modalEmoji">ðŸ’–</span>
+    <h2 id="modalTitle">Amor de mi Vida</h2>
+    <p id="modalText">Cuanto mÃ¡s tiempo estamos juntos, mÃ¡s te amo.</p>
+    <button class="modal-back" onclick="closeModal()">VOLVER â¤ï¸</button>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('scene');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const cardsData = [
+    {
+      label: "AMOR DE MI VIDA",
+      emoji: "ðŸ’‘",
+      title: "Amor de mi Vida",
+      text: "Alexandra, cuanto mÃ¡s tiempo estamos juntos, mÃ¡s te amo y mÃ¡s seguro estoy de que eres tÃº."
+    },
+    {
+      label: "PARA TI",
+      emoji: "ðŸ¶ðŸ’•",
+      title: "Para ti, Alexandra",
+      text: "Para ti, que haces latir mi corazÃ³n de una forma Ãºnica. En cada recuerdo y en cada latido, estÃ¡s tÃº."
+    },
+    {
+      label: "PARA SIEMPRE",
+      emoji: "âœ¨â¤ï¸",
+      title: "Para Siempre",
+      text: "No me importa cuÃ¡ntas vidas tenga que vivir, en cada una de ellas te elegirÃ­a a ti. Para siempre y un dÃ­a mÃ¡s."
+    },
+    {
+      label: "ERES MAGIA",
+      emoji: "ðŸª„ðŸŒ¸",
+      title: "Eres Magia Pura",
+      text: "Tienes la capacidad de iluminar hasta mi dÃ­a mÃ¡s gris con una sola palabra o una sonrisa tuya."
+    },
+    {
+      label: "MI AMOR ETERNO âˆž",
+      emoji: "â™¾ï¸ðŸ’—",
+      title: "Mi Amor Eterno",
+      text: "Este universo entero se queda pequeÃ±o comparado con todo lo que siento por ti, Alexandra."
+    },
+    {
+      label: "TE ADORO",
+      emoji: "ðŸŒ¹ðŸ¥°",
+      title: "Te Adoro",
+      text: "Gracias por existir y por permitirme quererte tanto cada dÃ­a."
+    }
+  ];
+
+  const heartPoints = [];
+  for (let i = 0; i < 800; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const zOffset = (Math.random() - 0.5) * 3.5;
+    const r = 0.88 + Math.random() * 0.16;
+    const x = 16 * Math.pow(Math.sin(t), 3) * r;
+    const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * r;
+    heartPoints.push({ x, y, z: zOffset, color: Math.random() > 0.35 ? '#ff2a85' : '#ff9ebb' });
+  }
+
+  const swirlPoints = [];
+  for (let i = 0; i < 950; i++) {
+    const arm = i % 3;
+    const radius = 25 + Math.random() * 290;
+    const angle = arm * (Math.PI * 2 / 3) + radius * 0.022 + (Math.random() - 0.5) * 0.35;
+    swirlPoints.push({ radius, angle, size: 1 + Math.random() * 2 });
+  }
+
+  let rotAngle = 0;
+  let warpSpeed = 0;
+  let clickableHitboxes = [];
+
+  function render() {
+    ctx.fillStyle = 'rgba(6, 1, 10, 0.35)';
+    ctx.fillRect(0, 0, W, H);
+
+    const cx = W / 2;
+    const diskY = H * 0.65;
+    const heartY = H * 0.32;
+    const scaleH = Math.min(W, H) * 0.0115;
+
+    const coreGrad = ctx.createRadialGradient(cx, diskY, 5, cx, diskY, 170);
+    coreGrad.addColorStop(0, '#000000');
+    coreGrad.addColorStop(0.22, '#ff2a85');
+    coreGrad.addColorStop(0.55, 'rgba(180, 20, 95, 0.35)');
+    coreGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = coreGrad;
+    ctx.beginPath();
+    ctx.ellipse(cx, diskY, 220, 75, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    swirlPoints.forEach(p => {
+      const a = p.angle + rotAngle * 0.9;
+      const sx = cx + Math.cos(a) * p.radius * (W / 850);
+      const sy = diskY + Math.sin(a) * p.radius * 0.32;
+      ctx.fillStyle = p.radius < 90 ? '#ffb3d1' : '#ff1e7a';
+      ctx.beginPath();
+      ctx.arc(sx, sy, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    const cosY = Math.cos(Math.sin(rotAngle) * 0.45);
+    const sinY = Math.sin(Math.sin(rotAngle) * 0.45);
+    heartPoints.forEach(hp => {
+      const rx = hp.x * cosY - hp.z * sinY;
+      const px = cx + rx * scaleH;
+      const py = heartY + hp.y * scaleH;
+      ctx.fillStyle = hp.color;
+      ctx.beginPath();
+      ctx.arc(px, py, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    clickableHitboxes = [];
+    cardsData.forEach((item, idx) => {
+      const a = (idx / cardsData.length) * Math.PI * 2 + rotAngle * 0.55;
+      const rx = W * 0.39;
+      const ry = H * 0.16;
+      const x = cx + Math.cos(a) * rx;
+      const y = diskY + Math.sin(a) * ry;
+      const depth = (Math.sin(a) + 1) / 2;
+      const sc = 0.72 + depth * 0.38;
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(sc, sc);
+      ctx.globalAlpha = 0.45 + depth * 0.55;
+
+      ctx.font = '24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(item.emoji, 0, -14);
+
+      ctx.font = '700 13px Montserrat, sans-serif';
+      ctx.fillStyle = '#ff9ebb';
+      ctx.shadowColor = '#ff1e7a';
+      ctx.shadowBlur = 10;
+      ctx.fillText(item.label, 0, 10);
+      ctx.restore();
+
+      clickableHitboxes.push({ x, y, r: 48 * sc, data: item });
+    });
+
+    rotAngle += 0.012 + warpSpeed;
+    if (warpSpeed > 0) warpSpeed *= 0.94;
+    requestAnimationFrame(render);
+  }
+  render();
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    for (let i = clickableHitboxes.length - 1; i >= 0; i--) {
+      const hb = clickableHitboxes[i];
+      if (Math.hypot(mx - hb.x, my - hb.y) < hb.r) {
+        document.getElementById('modalEmoji').textContent = hb.data.emoji;
+        document.getElementById('modalTitle').textContent = hb.data.title;
+        document.getElementById('modalText').textContent = hb.data.text;
+        document.getElementById('modal-card').classList.add('open');
+        break;
+      }
+    }
+  });
+
+  function closeModal() {
+    document.getElementById('modal-card').classList.remove('open');
+  }
+
+  const audio = document.getElementById('universeAudio');
+  const toggleMusicBtn = document.getElementById('toggleMusicBtn');
+  let isPlaying = false;
+  let synthLoop = null;
+
+  function toggleMusic(force = false) {
+    const action = force ? window.AlexandraMusic.play() : window.AlexandraMusic.toggle();
+    action.catch(() => {});
+  }
+
+  toggleMusicBtn.addEventListener('click', () => window.AlexandraMusic.toggle().catch(() => {}));
+
+  document.getElementById('enterBtn').addEventListener('click', () => {
+    warpSpeed = 0.25;
+    toggleMusic(true);
+    const overlay = document.getElementById('intro-overlay');
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.style.display = 'none', 800);
+  });
+</script>
+<script src="../../packages/audio/shared-music.js"></script>
+</body>
+</html>
+
